@@ -1,9 +1,16 @@
 {
   "dependencies": {
+    "@aws-crypto/sha256-browser": "^5.2.0",
+    "@aws-sdk/client-dynamodb": "^3.749.0",
+    "@aws-sdk/lib-dynamodb": "^3.749.0",
+    "@aws-sdk/protocol-http": "^3.370.0",
+    "@aws-sdk/signature-v4": "^3.370.0",
+    "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "framer-motion": "^12.4.3"
+    "framer-motion": "^12.4.3",
+    "uuid": "^11.0.5"
   },
   "scripts": {
     "start": "node src/server.js",
