@@ -70,27 +70,45 @@ const submitBill = async (req, res, next) => {
   try {
     const { billName, billSummary } = req.body;
     
+    console.log('Received request body:', req.body);
+    
     const billItem = {
-      id: uuidv4(), // Generate unique ID
+      id: uuidv4(),
       billName,
       billSummary,
       createdAt: new Date().toISOString()
     };
+
+    console.log('Attempting to save bill item:', billItem);
 
     const command = new PutCommand({
       TableName: 'billTable',
       Item: billItem
     });
 
-    await docClient.send(command);
+    try {
+      await docClient.send(command);
+      console.log('Successfully saved to DynamoDB');
+    } catch (dbError) {
+      console.error('DynamoDB Error:', {
+        message: dbError.message,
+        code: dbError.code,
+        statusCode: dbError.statusCode,
+        requestId: dbError.$metadata?.requestId
+      });
+      throw dbError;
+    }
 
-    // Send success response
     res.status(201).json({
-      message: 'Bill submitted successfully!',
+      message: 'Bill submitted successfully',
       data: billItem
     });
   } catch (error) {
-    console.error('Error submitting bill:', error);
+    console.error('Error in submitBill:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
     next(error);
   }
 };
