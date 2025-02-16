@@ -86,7 +86,7 @@ const submitBill = async (req, res, next) => {
 
     // Send success response
     res.status(201).json({
-      message: 'Bill submitted successfully',
+      message: 'Bill submitted successfully!',
       data: billItem
     });
   } catch (error) {
