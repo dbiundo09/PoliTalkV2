@@ -1,3 +1,4 @@
+// src/controllers/index.js
 const { checkTableExists } = require('../utils/dynamodb');
 const { SignatureV4 } = require('@aws-sdk/signature-v4');
 const { HttpRequest } = require('@aws-sdk/protocol-http');
