@@ -11,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Routes
 app.use('/api', routes);
 
@@ -19,6 +20,12 @@ app.use(errorHandler);
 
 // 404 handler
 app.use((req, res) => {
+  console.log('404 Not Found:', {
+    method: req.method,
+    url: req.url,
+    path: req.path,
+    params: req.params
+  });
   res.status(404).json({ message: 'Route not found' });
 });
 

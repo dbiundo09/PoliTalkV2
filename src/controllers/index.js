@@ -44,11 +44,11 @@ const refreshBills = async (req, res, next) => {
     const signer = new SignatureV4({
       credentials: {
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       },
-      region: 'us-east-1',
+      region: process.env.AWS_REGION,
       service: 'execute-api',
-      sha256: Sha256
+      sha256: Sha256,
     });
 
     const signedRequest = await signer.sign(request);
@@ -68,14 +68,13 @@ const refreshBills = async (req, res, next) => {
 
 const submitBill = async (req, res, next) => {
   try {
-    const { billName, billSummary } = req.body;
-    
-    console.log('Received request body:', req.body);
+    const { billName, billSummary, billDetails } = req.body;
     
     const billItem = {
       id: uuidv4(),
       billName,
       billSummary,
+      billDetails,
       createdAt: new Date().toISOString()
     };
 
@@ -113,10 +112,49 @@ const submitBill = async (req, res, next) => {
   }
 };
 
+const deleteBill = async (req, res, next) => {
+  try {
+    const { billId } = req.params;
+    
+    const request = new HttpRequest({
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      path: `/default/deleteBill/${billId}`,
+    });
+
+    console.log('Request:', request);
+
+    const signer = new SignatureV4({
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+      region: process.env.AWS_REGION,
+      service: 'execute-api',
+      sha256: Sha256,
+    });
+
+    const signedRequest = await signer.sign(request);
+
+    const response = await axios({
+      ...signedRequest,
+      url: `https://5hee4pdjul.execute-api.us-east-1.amazonaws.com/default/deleteBill/${billId}`,
+    });
+
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error in deleteBill');
+    next(error);
+  }
+};
+
 module.exports = {
   healthCheck,
   helloWorld,
   checkTable,
   refreshBills,
-  submitBill
+  submitBill,
+  deleteBill
 }; 

@@ -5,7 +5,8 @@ const {
   helloWorld, 
   checkTable, 
   refreshBills, 
-  submitBill 
+  submitBill,
+  deleteBill
 } = require('../controllers');
 
 router.get('/health', healthCheck);
@@ -13,5 +14,6 @@ router.get('/hello', helloWorld);
 router.get('/table/:tableName/exists', checkTable);
 router.get('/bills/refresh', refreshBills);
 router.post('/submit-bill', submitBill);
+router.delete('/bills/deleteBill/:billId', deleteBill);
 
 module.exports = router; 
