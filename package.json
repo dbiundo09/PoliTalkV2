@@ -5,6 +5,7 @@
     "@aws-sdk/lib-dynamodb": "^3.749.0",
     "@aws-sdk/protocol-http": "^3.370.0",
     "@aws-sdk/signature-v4": "^3.370.0",
+    "@emailjs/browser": "^4.4.1",
     "axios": "^1.7.9",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
